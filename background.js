@@ -1,13 +1,34 @@
-// Manifest V3 background service worker.
-// Runs only when the browser needs it; do not rely on global state persisting.
+// Toggle the current browser window between normal and fullscreen.
+// Fullscreen hides browser chrome (including the address/search bar).
+async function toggleFullscreen() {
+  const currentWindow = await chrome.windows.getCurrent();
 
-chrome.runtime.onInstalled.addListener(() => {
-  console.info("Extension Template installed.");
+  if (!currentWindow?.id) return;
+
+  const enteringFullscreen = currentWindow.state !== "fullscreen";
+  await chrome.windows.update(currentWindow.id, {
+    state: enteringFullscreen ? "fullscreen" : "normal"
+  });
+
+  await chrome.action.setTitle({
+    title: enteringFullscreen ? "Exit fullscreen" : "Enter fullscreen"
+  });
+}
+
+chrome.action.onClicked.addListener(() => {
+  toggleFullscreen().catch((error) => {
+    console.error("Could not toggle fullscreen:", error);
+  });
 });
 
-chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
-  // TODO: Handle messages from popup, options, or content scripts.
-  if (message?.type === "PING") {
-    sendResponse({ ok: true });
+chrome.commands.onCommand.addListener((command) => {
+  if (command === "toggle-fullscreen") {
+    toggleFullscreen().catch((error) => {
+      console.error("Could not toggle fullscreen:", error);
+    });
   }
+});
+
+chrome.runtime.onInstalled.addListener(() => {
+  chrome.action.setTitle({ title: "Enter fullscreen" });
 });
