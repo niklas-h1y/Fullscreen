@@ -1,16 +1,13 @@
 {
   "manifest_version": 3,
   "name": "Fullscreen for Lemur",
-  "version": "1.1.0",
-  "description": "Adds an on-page button that uses the webpage Fullscreen API to hide browser controls where supported.",
-  "action": {
-    "default_title": "Use the fullscreen button shown on the webpage"
+  "version": "1.2.0",
+  "description": "Enter webpage fullscreen when you tap the extension icon.",
+  "permissions": ["activeTab", "scripting"],
+  "background": {
+    "service_worker": "background.js"
   },
-  "content_scripts": [
-    {
-      "matches": ["http://*/*", "https://*/*"],
-      "js": ["fullscreen.js"],
-      "run_at": "document_idle"
-    }
-  ]
+  "action": {
+    "default_title": "Enter fullscreen"
+  }
 }
