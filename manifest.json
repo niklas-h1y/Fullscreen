@@ -1,36 +1,25 @@
 {
   "manifest_version": 3,
-  "name": "Extension Template",
+  "name": "Fullscreen",
   "version": "1.0.0",
-  "description": "A starter template for browser extensions.",
+  "description": "Hide the browser toolbar and search/address bar by toggling fullscreen mode.",
   "action": {
-    "default_title": "Extension Template",
-    "default_popup": "popup/index.html"
+    "default_title": "Enter fullscreen"
   },
   "background": {
     "service_worker": "background.js"
   },
-  "options_page": "options/index.html",
-  "content_scripts": [
-    {
-      "matches": [
-        "https://example.com/*"
-      ],
-      "js": [
-        "content/content.js"
-      ],
-      "css": [
-        "content/content.css"
-      ],
-      "run_at": "document_idle"
+  "commands": {
+    "toggle-fullscreen": {
+      "suggested_key": {
+        "default": "Alt+Shift+F"
+      },
+      "description": "Toggle browser fullscreen"
     }
-  ],
-  "permissions": [
-    "storage"
-  ],
+  },
   "browser_specific_settings": {
     "gecko": {
-      "id": "extension-template@example.com",
+      "id": "fullscreen-toggle@example.com",
       "strict_min_version": "109.0"
     }
   }
